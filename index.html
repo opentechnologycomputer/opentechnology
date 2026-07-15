@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Open Technology — AI &amp; Coding Training Institute, Ashta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B1220;
+    --panel:#111A2E;
+    --panel-2:#0E1626;
+    --line: rgba(148,163,184,0.16);
+    --cyan:#22D3EE;
+    --amber:#F5A524;
+    --green:#34D399;
+    --text:#E8EDF3;
+    --muted:#8FA0B8;
+    --font-display:'Sora', sans-serif;
+    --font-body:'Inter', sans-serif;
+    --font-mono:'JetBrains Mono', monospace;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--text);
+    font-family:var(--font-body);
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:1120px; margin:0 auto; padding:0 24px;}
+
+  /* Background grid texture */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:48px 48px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+    pointer-events:none;
+    z-index:0;
+    opacity:0.5;
+  }
+
+  /* NAV */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(11,18,32,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 24px; max-width:1120px; margin:0 auto;
+  }
+  .logo{
+    font-family:var(--font-mono); font-weight:600; font-size:15px;
+    display:flex; align-items:center; gap:10px; color:var(--text);
+  }
+  .logo .dot{width:8px; height:8px; border-radius:50%; background:var(--green); box-shadow:0 0 8px var(--green);}
+  .logo span.brand{color:var(--cyan);}
+  .navlinks{display:flex; gap:28px; font-size:14px; color:var(--muted);}
+  .navlinks a:hover{color:var(--cyan);}
+  .navcta{
+    font-family:var(--font-mono); font-size:13px;
+    border:1px solid var(--cyan); color:var(--cyan);
+    padding:8px 16px; border-radius:6px;
+    transition:all .2s;
+  }
+  .navcta:hover{background:var(--cyan); color:var(--ink);}
+  .navtoggle{display:none; flex-direction:column; gap:4px; cursor:pointer; background:none; border:none;}
+  .navtoggle span{width:22px; height:2px; background:var(--text); display:block;}
+
+  /* HERO */
+  .hero{
+    position:relative; z-index:1;
+    padding:88px 24px 64px;
+    max-width:1120px; margin:0 auto;
+    display:grid; grid-template-columns:1.1fr 0.9fr; gap:48px; align-items:center;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:var(--font-mono); font-size:12px; color:var(--amber);
+    border:1px solid rgba(245,165,36,0.35); background:rgba(245,165,36,0.08);
+    padding:6px 12px; border-radius:20px; margin-bottom:20px;
+  }
+  .eyebrow .pulse{width:6px; height:6px; border-radius:50%; background:var(--amber); animation:pulse 1.6s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;} 50%{opacity:0.3;}}
+  h1{
+    font-family:var(--font-display); font-weight:800;
+    font-size:clamp(32px, 4.6vw, 52px); line-height:1.08;
+    letter-spacing:-0.02em; margin-bottom:20px;
+  }
+  h1 .accent{color:var(--cyan);}
+  .hero p.lede{color:var(--muted); font-size:16px; max-width:480px; margin-bottom:32px;}
+  .hero-ctas{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:36px;}
+  .btn{
+    font-family:var(--font-mono); font-size:14px; font-weight:500;
+    padding:13px 22px; border-radius:8px; display:inline-flex; align-items:center; gap:8px;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-primary{background:var(--cyan); color:var(--ink); box-shadow:0 0 0 rgba(34,211,238,0);}
+  .btn-primary:hover{transform:translateY(-2px); box-shadow:0 8px 24px rgba(34,211,238,0.25);}
+  .btn-ghost{border:1px solid var(--line); color:var(--text);}
+  .btn-ghost:hover{border-color:var(--cyan); color:var(--cyan); transform:translateY(-2px);}
+  .trustrow{display:flex; gap:24px; flex-wrap:wrap; font-family:var(--font-mono); font-size:13px; color:var(--muted);}
+  .trustrow b{color:var(--green); font-weight:600;}
+
+  /* Terminal */
+  .terminal{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    overflow:hidden; box-shadow:0 30px 60px -20px rgba(0,0,0,0.5);
+  }
+  .term-bar{
+    display:flex; align-items:center; gap:8px; padding:12px 16px;
+    background:var(--panel-2); border-bottom:1px solid var(--line);
+  }
+  .term-bar .tdot{width:10px; height:10px; border-radius:50%;}
+  .term-bar .r{background:#EF4444;} .term-bar .y{background:#F5A524;} .term-bar .g{background:#34D399;}
+  .term-title{margin-left:auto; font-family:var(--font-mono); font-size:12px; color:var(--muted);}
+  .term-body{padding:20px; font-family:var(--font-mono); font-size:13.5px; min-height:260px;}
+  .term-line{margin-bottom:10px; color:var(--muted);}
+  .term-line .prompt{color:var(--green);}
+  .term-line .path{color:var(--cyan);}
+  #typed-course{color:var(--text);}
+  .cursor{display:inline-block; width:8px; height:16px; background:var(--cyan); vertical-align:text-bottom; animation:blink 1s step-end infinite;}
+  @keyframes blink{0%,100%{opacity:1;} 50%{opacity:0;}}
+  .term-output{color:var(--amber); margin-top:2px;}
+
+  /* SECTIONS */
+  section{position:relative; z-index:1; padding:80px 24px;}
+  .section-head{max-width:640px; margin-bottom:48px;}
+  .tag{font-family:var(--font-mono); font-size:12px; color:var(--cyan); text-transform:uppercase; letter-spacing:0.08em;}
+  h2{font-family:var(--font-display); font-weight:700; font-size:clamp(26px,3vw,36px); margin:10px 0 12px; letter-spacing:-0.01em;}
+  .section-head p{color:var(--muted); font-size:15px;}
+
+  /* Director */
+  .director{
+    display:grid; grid-template-columns:220px 1fr; gap:40px; align-items:start;
+    background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:36px;
+  }
+  .avatar{
+    width:180px; height:180px; border-radius:14px;
+    background:linear-gradient(135deg, rgba(34,211,238,0.18), rgba(245,165,36,0.14));
+    border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-size:56px; font-weight:800; color:var(--cyan);
+  }
+  .director h3{font-family:var(--font-display); font-size:22px; margin-bottom:4px;}
+  .director .role{color:var(--amber); font-family:var(--font-mono); font-size:13px; margin-bottom:16px;}
+  .badges{display:flex; flex-wrap:wrap; gap:8px; margin-top:16px;}
+  .badge{
+    font-family:var(--font-mono); font-size:12px; color:var(--text);
+    border:1px solid var(--line); padding:6px 12px; border-radius:6px;
+    background:var(--panel-2);
+  }
+
+  /* Courses grid */
+  .courses{display:grid; grid-template-columns:repeat(2, 1fr); gap:20px;}
+  .course-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:26px;
+    transition:border-color .2s, transform .2s;
+  }
+  .course-card:hover{border-color:var(--cyan); transform:translateY(-3px);}
+  .course-head{display:flex; align-items:center; gap:12px; margin-bottom:12px;}
+  .course-icon{
+    font-family:var(--font-mono); font-size:12px; color:var(--ink);
+    background:var(--cyan); width:34px; height:34px; border-radius:8px;
+    display:flex; align-items:center; justify-content:center; font-weight:700; flex-shrink:0;
+  }
+  .course-card h4{font-family:var(--font-display); font-size:18px;}
+  .course-card p{color:var(--muted); font-size:14px;}
+  .course-list{list-style:none; margin-top:14px; font-family:var(--font-mono); font-size:12.5px; color:var(--muted);}
+  .course-list li{padding:3px 0;}
+  .course-list li::before{content:"→ "; color:var(--green);}
+
+  /* Downloads directory listing */
+  .dir-listing{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden;
+  }
+  .dir-row{
+    display:flex; align-items:center; gap:14px; padding:14px 20px;
+    border-bottom:1px solid var(--line); font-family:var(--font-mono); font-size:13.5px;
+    transition:background .15s;
+  }
+  .dir-row:last-child{border-bottom:none;}
+  .dir-row:hover{background:var(--panel-2);}
+  .dir-perm{color:var(--muted); width:90px; flex-shrink:0;}
+  .dir-name{flex:1; color:var(--text);}
+  .dir-name .ext{color:var(--amber);}
+  .dir-dl{color:var(--cyan); font-size:12px; border:1px solid rgba(34,211,238,0.3); padding:5px 12px; border-radius:6px; flex-shrink:0;}
+  .dir-dl:hover{background:var(--cyan); color:var(--ink);}
+
+  /* Assessment */
+  .assess-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:20px;}
+  .assess-card{
+    background:linear-gradient(160deg, var(--panel), var(--panel-2));
+    border:1px solid var(--line); border-radius:12px; padding:28px;
+  }
+  .assess-card .tag{margin-bottom:10px; display:block;}
+  .assess-card h4{font-family:var(--font-display); font-size:19px; margin-bottom:8px;}
+  .assess-card p{color:var(--muted); font-size:14px; margin-bottom:20px;}
+
+  /* Stats strip */
+  .stats{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
+    background:var(--line); border:1px solid var(--line); border-radius:12px; overflow:hidden;
+  }
+  .stat{background:var(--panel); padding:28px 20px; text-align:center;}
+  .stat .num{font-family:var(--font-display); font-size:30px; font-weight:800; color:var(--cyan);}
+  .stat .lbl{font-family:var(--font-mono); font-size:12px; color:var(--muted); margin-top:6px;}
+
+  /* Contact / Footer */
+  footer{
+    border-top:1px solid var(--line); padding:56px 24px 32px; position:relative; z-index:1;
+  }
+  .foot-grid{
+    display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:40px; max-width:1120px; margin:0 auto 40px;
+  }
+  .foot-grid h5{font-family:var(--font-mono); font-size:13px; color:var(--cyan); margin-bottom:14px; text-transform:uppercase; letter-spacing:0.06em;}
+  .foot-grid p, .foot-grid a{color:var(--muted); font-size:14px; display:block; margin-bottom:8px;}
+  .foot-grid a:hover{color:var(--cyan);}
+  .foot-bottom{
+    max-width:1120px; margin:0 auto; padding-top:24px; border-top:1px solid var(--line);
+    font-family:var(--font-mono); font-size:12px; color:var(--muted);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+  }
+
+  @media (max-width:860px){
+    .hero{grid-template-columns:1fr; padding-top:110px;}
+    .navlinks{display:none;}
+    .navtoggle{display:flex;}
+    .director{grid-template-columns:1fr; text-align:left;}
+    .avatar{margin-bottom:8px;}
+    .courses, .assess-grid{grid-template-columns:1fr;}
+    .stats{grid-template-columns:repeat(2,1fr);}
+    .foot-grid{grid-template-columns:1fr; gap:28px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .cursor, .eyebrow .pulse{animation:none;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="logo"><span class="dot"></span>open<span class="brand">tech</span>/ashta</div>
+    <div class="navlinks">
+      <a href="#courses">Courses</a>
+      <a href="#downloads">Study Material</a>
+      <a href="#assess">Exam Portal</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a class="navcta" href="tel:9229515885">$ call --now</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div>
+    <div class="eyebrow"><span class="pulse"></span>ADMISSIONS OPEN 2026–27</div>
+    <h1>Ashta's coding &amp; AI institute, <span class="accent">run like a real lab.</span></h1>
+    <p class="lede">Hands-on training in AI, programming, cyber security and job-ready skills — taught by a Certified Ethical Hacker, built for students who want more than a certificate.</p>
+    <div class="hero-ctas">
+      <a class="btn btn-primary" href="#courses">./view-courses</a>
+      <a class="btn btn-ghost" href="tel:9229515885">Call Now</a>
+    </div>
+    <div class="trustrow">
+      <span><b>4.8★</b> Justdial · 200+ reviews</span>
+      <span><b>DCA/PGDCA</b> Govt. recognized</span>
+    </div>
+  </div>
+
+  <div class="terminal">
+    <div class="term-bar">
+      <span class="tdot r"></span><span class="tdot y"></span><span class="tdot g"></span>
+      <span class="term-title">student@opentech: ~/ashta</span>
+    </div>
+    <div class="term-body">
+      <div class="term-line"><span class="prompt">$</span> whoami</div>
+      <div class="term-line term-output">harendra_singh_thakur — Director, CEH · MCP · CCNA · RHCSA</div>
+      <div class="term-line"><span class="prompt">$</span> ls ./courses</div>
+      <div class="term-line" id="typed-line"><span id="typed-course"></span><span class="cursor"></span></div>
+      <div class="term-line" style="margin-top:18px;"><span class="prompt">$</span> ./enroll --batch=2026</div>
+      <div class="term-line term-output">status: seats filling fast. run for admission.</div>
+    </div>
+  </div>
+</section>
+
+<section id="director">
+  <div class="wrap">
+    <div class="director">
+      <div class="avatar">HST</div>
+      <div>
+        <div class="tag">Director</div>
+        <h3>Harendra Singh Thakur</h3>
+        <div class="role">Founder &amp; Lead Trainer, Open Technology</div>
+        <p style="color:var(--muted); font-size:14.5px; max-width:560px;">Trains students across AI, coding, networking and ethical hacking from Ashta — bringing industry-grade certification standards to a small-town classroom.</p>
+        <div class="badges">
+          <span class="badge">Microsoft Certified Professional</span>
+          <span class="badge">Certified Ethical Hacker (CEH)</span>
+          <span class="badge">CCNA</span>
+          <span class="badge">RHCSA</span>
+          <span class="badge">CompTIA Networking</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="courses">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="tag">// programs</div>
+      <h2>Professional programs</h2>
+      <p>Four tracks, one goal — job-ready skills, whether that's a placement, a government exam, or your own startup.</p>
+    </div>
+    <div class="courses">
+      <div class="course-card">
+        <div class="course-head"><div class="course-icon">AI</div><h4>AI &amp; Software Dev</h4></div>
+        <p>Build real projects from day one.</p>
+        <ul class="course-list">
+          <li>Python, Java, C/C++</li>
+          <li>Artificial Intelligence fundamentals</li>
+          <li>Web Development (HTML, CSS, JS, PHP)</li>
+        </ul>
+      </div>
+      <div class="course-card">
+        <div class="course-head"><div class="course-icon">CS</div><h4>Cyber Security</h4></div>
+        <p>Taught directly by a Certified Ethical Hacker.</p>
+        <ul class="course-list">
+          <li>Ethical Hacking</li>
+          <li>Network Security &amp; Hardware</li>
+          <li>CCNA-aligned networking</li>
+        </ul>
+      </div>
+      <div class="course-card">
+        <div class="course-head"><div class="course-icon">DP</div><h4>Diplomas</h4></div>
+        <p>Government-recognized, one-year programs.</p>
+        <ul class="course-list">
+          <li>DCA — Diploma in Computer Applications</li>
+          <li>PGDCA — Post Graduate Diploma</li>
+        </ul>
+      </div>
+      <div class="course-card">
+        <div class="course-head"><div class="course-icon">JB</div><h4>Job Skills</h4></div>
+        <p>Straight to employability and govt. exams.</p>
+        <ul class="course-list">
+          <li>Tally Prime</li>
+          <li>CPCT Exam Preparation</li>
+          <li>Digital Marketing</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="downloads">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="tag">// resources</div>
+      <h2>Download study material</h2>
+      <p>Free notes for enrolled students — updated every batch.</p>
+    </div>
+    <div class="dir-listing">
+      <div class="dir-row"><span class="dir-perm">-rw-r--r--</span><span class="dir-name">word_notes<span class="ext">.pdf</span></span><span class="dir-dl">Download</span></div>
+      <div class="dir-row"><span class="dir-perm">-rw-r--r--</span><span class="dir-name">excel_notes<span class="ext">.pdf</span></span><span class="dir-dl">Download</span></div>
+      <div class="dir-row"><span class="dir-perm">-rw-r--r--</span><span class="dir-name">python_notes<span class="ext">.pdf</span></span><span class="dir-dl">Download</span></div>
+      <div class="dir-row"><span class="dir-perm">-rw-r--r--</span><span class="dir-name">c_programming<span class="ext">.pdf</span></span><span class="dir-dl">Download</span></div>
+      <div class="dir-row"><span class="dir-perm">-rw-r--r--</span><span class="dir-name">tally_complete_notes<span class="ext">.pdf</span></span><span class="dir-dl">Download</span></div>
+      <div class="dir-row"><span class="dir-perm">-rw-r--r--</span><span class="dir-name">html_notes<span class="ext">.pdf</span></span><span class="dir-dl">Download</span></div>
+      <div class="dir-row"><span class="dir-perm">-rw-r--r--</span><span class="dir-name">networking_notes<span class="ext">.pdf</span></span><span class="dir-dl">Download</span></div>
+      <div class="dir-row"><span class="dir-perm">-rwxr-xr-x</span><span class="dir-name">quiz_game_project<span class="ext">.py</span></span><span class="dir-dl">Download</span></div>
+      <div class="dir-row"><span class="dir-perm">-rw-r--r--</span><span class="dir-name">shortcut_keys<span class="ext">.pdf</span></span><span class="dir-dl">Download</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="assess">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="tag">// exam portal</div>
+      <h2>Online assessment portal</h2>
+      <p>Track your progress before test day.</p>
+    </div>
+    <div class="assess-grid">
+      <div class="assess-card">
+        <span class="tag">Weekly</span>
+        <h4>Weekly Skill Assessment</h4>
+        <p>Check your progress with a short quiz every week.</p>
+        <a class="btn btn-primary" href="https://forms.gle/4vuUfjmkbqj4WrcU6" target="_blank" rel="noopener">Start Test</a>
+      </div>
+      <div class="assess-card">
+        <span class="tag">Mock Exam</span>
+        <h4>Mock CPCT Exam</h4>
+        <p>Practice for your upcoming government computer test.</p>
+        <a class="btn btn-ghost" href="#">Start Test</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="stats">
+  <div class="wrap">
+    <div class="stats">
+      <div class="stat"><div class="num">4.8★</div><div class="lbl">Justdial rating</div></div>
+      <div class="stat"><div class="num">200+</div><div class="lbl">Student reviews</div></div>
+      <div class="stat"><div class="num">10+</div><div class="lbl">Courses offered</div></div>
+      <div class="stat"><div class="num">2026</div><div class="lbl">Admissions open</div></div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="foot-grid">
+    <div>
+      <h5>Open Technology</h5>
+      <p style="color:var(--text); max-width:280px;">AI &amp; Coding Training Institute — Ashta's home for practical tech education, from AI to ethical hacking.</p>
+    </div>
+    <div>
+      <h5>Visit / Call</h5>
+      <p>Vijay Nagar, Opp. New Dussehra Maidan<br>Ashta - 466116, Sehore, MP</p>
+      <a href="tel:9229515885">📞 92295 15885</a>
+      <a href="tel:07560453228">☎ 07560-453228</a>
+    </div>
+    <div>
+      <h5>Quick Links</h5>
+      <a href="#courses">Courses</a>
+      <a href="#downloads">Study Material</a>
+      <a href="#assess">Exam Portal</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2026 Open Technology, Ashta — Director: Harendra Singh Thakur</span>
+    <span>Admissions Open 2026–27</span>
+  </div>
+</footer>
+
+<script>
+  // Mobile nav toggle placeholder (links still work via anchor scroll)
+  const courses = ["ai/", "python/", "java/", "web-development/", "cyber-security/", "ethical-hacking/", "tally-prime/", "digital-marketing/", "dca/", "pgdca/", "cpct/"];
+  const el = document.getElementById('typed-course');
+  let ci = 0, pos = 0, deleting = false;
+  function tick(){
+    const word = courses[ci];
+    if(!deleting){
+      pos++;
+      el.textContent = word.slice(0, pos);
+      if(pos === word.length){ deleting = true; setTimeout(tick, 900); return; }
+    } else {
+      pos--;
+      el.textContent = word.slice(0, pos);
+      if(pos === 0){ deleting = false; ci = (ci+1) % courses.length; }
+    }
+    setTimeout(tick, deleting ? 45 : 90);
+  }
+  tick();
+</script>
+
+</body>
+</html>
